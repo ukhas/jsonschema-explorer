@@ -39,7 +39,7 @@
             "required": true,
             "type": "string"
         },
-        "created": {
+        "time_created": {
             "title": "Document Creation Date",
             "description": "The date at which this document was created. Used for fetching the latest version of a configuration document. In RFC3339.",
             "type": "date-time",
