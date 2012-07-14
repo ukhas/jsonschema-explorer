@@ -149,7 +149,7 @@
                         "description": "A brief human readable description of this sentence configuration, just used for UI.",
                         "type": "string",
                         "required": false
-                    }
+                    },
                     "fields": {
                         "title": "Sentence Fields",
                         "description": "The fields this sentence is made up of, as an array, taken in order.",
