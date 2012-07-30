@@ -7,6 +7,12 @@
 # The few functions we'll need.
 ##############################################################################
 
+load = ->
+    if location.hash
+        load_json_from location.hash.replace /#/, ""
+    else
+        list_manifest()
+
 list_manifest = ->
     $('#parent').html "<h1>Loading Manifest...</h1>"
     $.getJSON "schemas/manifest.json", (data) ->
@@ -21,7 +27,6 @@ render_manifest = (data) ->
 
 load_json_from = (url) ->
     $('#parent').html "<h1>Loading Schema...</h1>"
-    location.hash = url
     $.getJSON url, (data) ->
         $('#parent').replaceWith render_object(data).attr 'id', 'parent'
 
@@ -55,21 +60,20 @@ is_object = (obj) ->
     return Object.prototype.toString.call(obj) == '[object Object]'
 
 ##############################################################################
-# We only need this one binding.
+# Event bindings.
 ##############################################################################
 
-$(window).bind "hashchange", (event) ->
-    load_json_from location.hash.replace /#/, ""
+$(window).on "click", "a", (event) ->
+    event.preventDefault()
+    history.pushState(null, null, $(this).attr('href'))
+    load_json_from $(this).attr('href').replace /#/, ""
+
+$(window).on "popstate", (event) ->
+    load()
 
 ##############################################################################
 # Runtime!
 ##############################################################################
 
-# Set up the body
 $("body").append "<section id=parent class=property />"
-
-# Have we been given a hash? Check!
-if location.hash
-    load_json_from location.hash.replace /#/, ""
-else
-    list_manifest()
+load()
